@@ -1,0 +1,8 @@
+MIDlet-Version: 9.9.9
+MIDlet-Icon: /icon.png
+MIDlet-Vendor: E-additives
+MIDlet-Jar-URL: e-additives.jar
+MicroEdition-Configuration: CLDC-1.0
+MIDlet-1: E-additives,/icon.png,com.kenamick.eadditives.CoreMidlet
+MicroEdition-Profile: MIDP-2.0
+MIDlet-Name: E-additives MIDlet

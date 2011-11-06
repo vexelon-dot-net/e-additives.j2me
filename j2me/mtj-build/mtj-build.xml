@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir=".." default="build-all" name="e-additives">
+
+	<taskdef classpath="${antenna.lib}" resource="antenna.properties"/>
+
+	<property file="mtj-build/mtj-build.properties"/>
+	
+	<!-- Target: Build all packages -->
+	<target depends="clean-all" name="build-all">
+		<!--
+		<copy overwrite="true" file="HISTORY" tofile="deployed/HISTORY"/>
+		-->
+		<antcall target="build-all-en" />
+		<antcall target="build-all-bg" />
+	</target>
+	
+	<!-- Target: Build all EN versions -->
+	<target name="build-all-en" description="Build all english language versions">
+		<!-- increase build number & create/update version file -->
+		<buildnumber file="mtj-build/BUILD"/>
+		<antcall target="build-en" />
+	</target>
+	
+	<!-- build [en] pack -->
+	<target name="build-en">
+		<property file="mtj-build/BUILD" />
+		<property name="package.version" value="${app.version.maj}.${app.verison.min}.${build.number}" />
+		<property name="package.lang" value="en" />
+		<property name="package.dir" value="${package.lang}/V${package.version}" />
+		<property name="package.name" value="${app.name}_${package.lang}" />
+		<property name="symbols" value="LANG_EN='1'" />
+		<antcall target="collect-resources-en" />
+		<antcall target="package"/>
+		
+		<!-- Save version file -->
+		<echo file="deployed/${package.lang}/${app.version.file}">EADEN;${app.version.maj}.${app.verison.min}.${build.number};</echo>
+		<!-- download urls & mirrors -->
+		<echo append="true" file="deployed/${package.lang}/${app.version.file}">http://e-additives.vexelon.net/downloads/en/V${package.version}/e-additives_en.jad;</echo>
+	</target>
+	
+	<!-- Target: Build all BG versions -->
+	<target name="build-all-bg" description="Build all bulgarian language versions">
+		<!-- increase build number & create/update version file -->
+		<buildnumber file="mtj-build/BUILD_BG"/>
+		<antcall target="build-bg" />
+	</target>	
+	
+	<!-- build [bg] pack -->
+	<target name="build-bg">
+		<property file="mtj-build/BUILD_BG" />
+		<property name="package.version" value="${app.version.maj}.${app.verison.min}.${build.number}" />
+		<property name="package.lang" value="bg" />
+		<property name="package.dir" value="${package.lang}/V${package.version}" />
+		<property name="package.name" value="${app.name}_${package.lang}" />
+		<property name="symbols" value="LANG_BG='1'" />
+		<antcall target="collect-resources-bg" />
+		<antcall target="package"/>
+
+		<echo file="deployed/${package.lang}/${app.version.file}">EADBG;${app.version.maj}.${app.verison.min}.${build.number};</echo>
+		<!-- download urls & mirrors -->
+		<echo append="true" file="deployed/${package.lang}/${app.version.file}">http://e-additives.vexelon.net/downloads/bg/V${package.version}/e-additives_bg.jad;</echo>
+	</target>	
+
+	<!-- Target: Clean all builds -->
+	<target depends="" name="clean-all">
+		<antcall target="clean"/>
+	</target>
+
+	<!-- Target: Clean default build -->
+	<target depends="" name="clean">
+		<delete dir="${app.build.path}" failonerror="false"/>
+	</target>
+
+	<!-- Target: Prepare build structure -->
+	<target depends="clean" name="init">
+		<mkdir dir="${app.build.path}/"/>
+		<mkdir dir="deployed/${package.dir}/"/>
+		<mkdir dir="${app.build.path}/classes/"/>
+		<mkdir dir="${app.build.path}/resources/"/>
+		<mkdir dir="${app.build.path}/bin/"/>
+	</target>
+
+	<!-- Target: Copy EN resources -->
+	<target depends="collect-resources" name="collect-resources-en">
+		<echo message="Copying EN resources ..." />
+		<copy overwrite="true" todir="${app.build.path}/resources/">
+			<fileset dir="res/" excludes="**/**.java">
+				<include name="l10n/en.xml" />
+				<include name="*.png"/>
+				<exclude name="splash_beta.png" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- Target: Copy BG resources -->
+	<target depends="collect-resources" name="collect-resources-bg">
+		<echo message="Copying BG resources ..." />
+		<copy overwrite="true" todir="${app.build.path}/resources/">
+			<fileset dir="res/" excludes="**/**.java">
+				<include name="l10n/bg.xml" />
+				<include name="*.png"/>
+				<exclude name="splash_beta.png" />
+			</fileset>
+		</copy>
+	</target>	
+
+	<!-- Target: Copy JAD & resources -->
+	<target depends="init" name="collect-resources">
+		<copy overwrite="true" file="Application Descriptor" tofile="deployed/${package.dir}/${package.name}.jad"/>
+		<replace file="deployed/${package.dir}/${package.name}.jad" token="e-additives.jar" value="${package.name}.jar"/>
+		<replace file="deployed/${package.dir}/${package.name}.jad" token="9.9.9" value="${package.version}"/>
+
+		<copy overwrite="true" todir="${app.build.path}/resources/">
+			<fileset dir="src/" excludes="**/**.java"/>
+		</copy>
+	</target>
+
+	<!-- Target: Copy source files -->
+	<target name="collect-sources">
+		<copy overwrite="true" todir="${app.build.path}/classes/">
+			<fileset dir="src" includes="**/**.java"/>
+			<fileset dir="res" includes="**/**.java"/>
+		</copy>
+		<!-- set build date -->
+		<tstamp />
+		<replace file="${app.build.path}/classes/com/kenamick/eadditives/Defs.java" token="__BUILD_DATE__" value="${DSTAMP} ${TSTAMP}"/>
+	</target>
+
+	<!-- Target: Build class files -->
+	<target depends="collect-sources" name="build">
+		<wtkpreprocess 
+			verbose="false"
+			srcdir="${app.build.path}/classes/" 
+			destdir="${app.build.path}/classes/" 
+			device="Generic/Java"
+			symbols="${symbols}"
+			debuglevel="${antenna.debuglevel}"
+			printsymbols="true">
+		</wtkpreprocess>
+			
+		<wtkbuild bootclasspath="${wtk.home.lib}/midpapi21.jar:${wtk.home.lib}/cldcapi11.jar:${wtk.home.lib}/wma20.jar:${wtk.home.lib}/mmapi.jar:${wtk.home.lib}/j2me-ws.jar:${wtk.home.lib}/j2me-xmlrpc.jar:${wtk.home.lib}/jsr75.jar:${wtk.home.lib}/jsr082.jar:${wtk.home.lib}/jsr184.jar:${wtk.home.lib}/jsr179.jar:${wtk.home.lib}/satsa-apdu.jar:${wtk.home.lib}/satsa-jcrmi.jar:${wtk.home.lib}/satsa-pki.jar:${wtk.home.lib}/satsa-crypto.jar:${wtk.home.lib}/jsr211.jar:${wtk.home.lib}/jsr238.jar:${wtk.home.lib}/jsr229.jar:${wtk.home.lib}/jsr180.jar:${wtk.home.lib}/jsr234.jar:${wtk.home.lib}/jsr226.jar:${wtk.home.lib}/jsr239.jar:" 
+			destdir="${app.build.path}/bin/" 
+			encoding="UTF-8" preverify="false" source="1.3" sourcepath="" 
+			srcdir="${app.build.path}/classes/"/>
+	</target>
+
+	<!-- Target: Package JAR file -->
+	<target depends="build" name="package">
+		<wtkpackage autoversion="${do-autoversion}" bootclasspath="${wtk.home.lib}/midpapi21.jar:${wtk.home.lib}/cldcapi11.jar:${wtk.home.lib}/wma20.jar:${wtk.home.lib}/mmapi.jar:${wtk.home.lib}/j2me-ws.jar:${wtk.home.lib}/j2me-xmlrpc.jar:${wtk.home.lib}/jsr75.jar:${wtk.home.lib}/jsr082.jar:${wtk.home.lib}/jsr184.jar:${wtk.home.lib}/jsr179.jar:${wtk.home.lib}/satsa-apdu.jar:${wtk.home.lib}/satsa-jcrmi.jar:${wtk.home.lib}/satsa-pki.jar:${wtk.home.lib}/satsa-crypto.jar:${wtk.home.lib}/jsr211.jar:${wtk.home.lib}/jsr238.jar:${wtk.home.lib}/jsr229.jar:${wtk.home.lib}/jsr180.jar:${wtk.home.lib}/jsr234.jar:${wtk.home.lib}/jsr226.jar:${wtk.home.lib}/jsr239.jar:" 
+			jadfile="deployed/${package.dir}/${package.name}.jad" 
+			jarfile="deployed/${package.dir}/${package.name}.jar" 
+			libclasspath="" obfuscate="${do-obfuscate}" preverify="true">
+
+			<fileset dir="${app.build.path}/bin/"/>
+			<fileset dir="${app.build.path}/resources/"/>
+
+		</wtkpackage>
+	</target>
+
+</project>

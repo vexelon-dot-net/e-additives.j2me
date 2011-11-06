@@ -1,0 +1,27 @@
+=E-additives HISTORY=
+
+==Known Issues:==
+ * Search menu button is misplaced on Sony Ericsson devices.
+
+==V1.2.1==
+ * fixed - When on additive groups screen each entry from the list can now be opened using CENTER/OK key.
+=== BG Language ===
+ * changed - Translated to BG language properties info - 'Animal Origin', 'Function', 'Found In'.
+
+==V1.2.0==
+ * added - Option to preview the application HISTORY file upon update.
+ * added - Additional information about additive groups.
+ * added - New additives - E328, E329, E478, E518, E710, E713, E931, E932
+ * added - Small UI enhancements - added icons.
+ * added - 'Animal Origin' info for all additives in the database. Useful for vegetarians.
+ * fixed - Additives were incorrectly sorted by E-number name instead of number only. This is now fixed. 
+ * changed - First found additive is now automatically selected in the search form.
+ * changed - When pressing 'Back' button on additive details form, the focus in set back to the last selected additive instead of the search text field.
+
+==V1.1.0==
+ * fixed - Bug where saved search type was not set upon application start.
+ * fixed - Bug where the update functionality wrongly recognized that new update was available when remote server version and application version where equal.
+
+==V1.0.70==
+ * fixed - bug where if update fails (due to user restriction), the automated search didn't work if the user presses any button different than 'Back'.
+ 

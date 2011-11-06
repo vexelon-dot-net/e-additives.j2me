@@ -1,0 +1,20 @@
+.:e-additives:.
+
+I. License
+
+This software is distributed under GNU GPL License. Please read the file COPYING for complete LICENSE info.
+
+II. Components
+
+1. ead_server/
+
+E-additives server application. Backend component of the E-additives platform.
+
+2. j2me/
+
+Java ME application which provides detailed information about food additives.
+
+3. android/
+
+Android application which provides detailed information about food additives.
+
