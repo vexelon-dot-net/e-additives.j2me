@@ -35,6 +35,7 @@ public:
     };
 };
 
+
 LoggerPtr testclass::logger(Logger::getLogger("asad"));
 LoggerPtr logger(Logger::getLogger("MyApp"));
 
@@ -45,6 +46,9 @@ int main(int argc, char* argv[]) {
     LOG4CXX_INFO(logger, "Entering application.");
     Configuration::getInstance();
     Configuration::getInstance().dispose();
+
+    testclass t;
+    t.dot();
 
     printf("hello world");
     return 0;
