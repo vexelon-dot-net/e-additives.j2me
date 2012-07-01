@@ -1,8 +1,0 @@
-// the configured options and settings for ead-server
-
-// version info
-#define VERSION_MAJOR @VERSION_MAJ@
-#define VERSION_MINOR @VERSION_MIN@
-
-// cpu
-#define CPU_ARCH @CPU_ARCH@
