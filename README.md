@@ -3,7 +3,8 @@
 
 # Summary
 
-General purpose of the E-additives project is to provide detailed information about food additives on Java microedition enabled phones.
+General purpose of the E-additives project is to provide detailed information about food additives on Java microedition enabled phones. Here is a [video](http://www.youtube.com/watch?v=pGYwv9jrG9A) of the app running in an emulator and some screenshots below:
+
 
 ![alt text](http://i.imgur.com/S7TWNgk.png "Search")
 ![alt text](http://i.imgur.com/xZKSOKE.png "View additive info")
