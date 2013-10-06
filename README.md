@@ -6,7 +6,8 @@
 General purpose of the E-additives project is to provide detailed information about food additives on Java microedition enabled phones.
 
 ![alt text](http://i.imgur.com/S7TWNgk.png "Search")
-![alt text](http://i.imgur.com/6BRopco.png "View additive info")
+![alt text](http://i.imgur.com/xZKSOKE.png "View additive info")
+![alt text](http://i.imgur.com/6BRopco.png "View additive info in Bulgarian")
 ![alt text](http://i.imgur.com/Cc2JFO8.png "Additive groups")
 
 # Installation
